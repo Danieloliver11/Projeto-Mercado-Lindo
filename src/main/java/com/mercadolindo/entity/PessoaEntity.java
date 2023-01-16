@@ -2,11 +2,13 @@ package com.mercadolindo.entity;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 
 import org.hibernate.validator.constraints.br.CPF;
 
 import com.mercadolindo.enums.SexoEnum;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -14,6 +16,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
@@ -26,6 +30,7 @@ public class PessoaEntity implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@Id
+	@Column(name = "ID")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
@@ -49,8 +54,18 @@ public class PessoaEntity implements Serializable{
 	private String email;
 	
 	@OneToOne
-	@Column(name = "USUARIO", nullable = false)
+	@JoinColumn(name = "USUARIO")
 	private UsuarioEntity usuario;
+	
+	@OneToOne
+	@JoinColumn(name = "ID_ENDERECO", nullable = false)
+	private EnderecoEntity endereco;
+	
+	@OneToMany(mappedBy = "pessoa",cascade = CascadeType.ALL)
+	private List<PedidoEntity> pedidos;
+	
+	@OneToMany(mappedBy = "pessoa")
+	private List<PerguntasEntity> perguntas;
 
 	public PessoaEntity() {
 		super();
@@ -111,6 +126,26 @@ public class PessoaEntity implements Serializable{
 	public void setUsuario(UsuarioEntity usuario) {
 		this.usuario = usuario;
 	}
+
+	public EnderecoEntity getEndereco() {
+		return endereco;
+	}
+
+	public void setEndereco(EnderecoEntity endereco) {
+		this.endereco = endereco;
+	}
+
+	public List<PedidoEntity> getPedidos() {
+		return pedidos;
+	}
+
+	public void setPedidos(List<PedidoEntity> pedidos) {
+		this.pedidos = pedidos;
+	}
+	
+	
+	
+	
 	
 	
 	
