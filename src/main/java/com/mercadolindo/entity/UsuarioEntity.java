@@ -5,6 +5,10 @@ import static com.mercadolindo.utils.Constante.AMERICA_SAO_PAULO;
 import java.io.Serializable;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Collection;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -19,7 +23,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "TB_USUARIO")
-public class UsuarioEntity  implements Serializable {
+public class UsuarioEntity implements  UserDetails , Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -125,5 +129,40 @@ public class UsuarioEntity  implements Serializable {
 	@PreUpdate
 	private void onUpdate() {
 		ultimoAcesso = ZonedDateTime.now(ZoneId.of(AMERICA_SAO_PAULO));
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return null;
+	}
+
+	@Override
+	public String getPassword() {
+		return this.senha.toString();
+	}
+
+	@Override
+	public String getUsername() {
+		return this.nomeUsuario;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return true;
 	}
 }

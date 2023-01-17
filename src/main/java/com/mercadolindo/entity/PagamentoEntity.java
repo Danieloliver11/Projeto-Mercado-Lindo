@@ -17,9 +17,9 @@ import jakarta.persistence.InheritanceType;
 import jakarta.persistence.Table;
 
 @Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "TB_PAGAMENTO")
-public class PagamentoEntity implements Serializable{
+public abstract class PagamentoEntity implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
@@ -32,6 +32,7 @@ public class PagamentoEntity implements Serializable{
 	private BigDecimal valor;
 	
 	@Enumerated(EnumType.STRING)
+	@Column(name = "STATUS")
 	private StatusPedidoEnum status;
 
 	public Long getId() {

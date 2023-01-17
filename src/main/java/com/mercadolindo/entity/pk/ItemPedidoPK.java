@@ -19,7 +19,7 @@ public class ItemPedidoPK implements Serializable {
 	private PedidoEntity pedido;
 	
 	@ManyToOne
-	@JoinColumn(name = "ID_PEDIDO")
+	@JoinColumn(name = "ID_PRODUTO")
 	private ProdutoEntity produto;
    
 	public PedidoEntity getPedido() {

@@ -15,8 +15,6 @@ public class CartaoCreditoEntity extends PagamentoEntity {
 	@Column(name = "PARCELAS", nullable = false)
 	private int parcelas;
 
-	
-	
 	public int getParcelas() {
 		return parcelas;
 	}
@@ -24,7 +22,5 @@ public class CartaoCreditoEntity extends PagamentoEntity {
 	public void setParcelas(int parcelas) {
 		this.parcelas = parcelas;
 	}
-	
-	
 
 }
