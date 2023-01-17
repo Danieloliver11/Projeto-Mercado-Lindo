@@ -35,6 +35,10 @@ public class EnderecoEntity implements Serializable{
 	private String cep;
 	
 	@ManyToOne
+	@JoinColumn(name = "ID_PESSOA", nullable = false)
+	private PessoaEntity pessoa;
+	
+	@ManyToOne
 	@JoinColumn(name = "ID_CIDADE")
 	private CidadeEntity cidade;
 
@@ -85,5 +89,15 @@ public class EnderecoEntity implements Serializable{
 	public void setCidade(CidadeEntity cidade) {
 		this.cidade = cidade;
 	}
+
+	public PessoaEntity getPessoa() {
+		return pessoa;
+	}
+
+	public void setPessoa(PessoaEntity pessoa) {
+		this.pessoa = pessoa;
+	}
+	
+	
 
 }
