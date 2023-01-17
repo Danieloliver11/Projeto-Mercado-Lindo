@@ -65,7 +65,10 @@ public class PessoaEntity implements Serializable{
 	private List<PedidoEntity> pedidos;
 	
 	@OneToMany(mappedBy = "pessoa")
-	private List<PerguntasEntity> perguntas;
+	private List<PerguntasEntity> perguntas; //N:N
+	
+	@OneToMany(mappedBy = "pessoa",cascade = CascadeType.ALL)
+	private List<AvaliacaoProdutosEntity> avaliacaoProduto; //n:n
 
 	public PessoaEntity() {
 		super();

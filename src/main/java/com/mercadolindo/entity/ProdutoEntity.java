@@ -2,14 +2,18 @@ package com.mercadolindo.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
@@ -36,14 +40,23 @@ public class ProdutoEntity implements Serializable{
 	@Column(name = "DESCRICACAO")
 	private String descricao;
 	
-	@OneToMany(mappedBy = "produto",cascade = CascadeType.ALL)
-	private List<Imagem> imagens;
+//	@OneToMany(mappedBy = "produto",cascade = CascadeType.ALL)
+//	private List<Imagem> imagens;
+	
+	@Lob
+	@ElementCollection
+	@CollectionTable(name = "TB_IMAGEM")
+	@Column(name = "IMAGEM")
+	private Collection<byte[]> imagens;
 	
 	@OneToMany(mappedBy = "id.produto")
 	private List<ItemPedidoEntity> itemPedidos;
 	
 	@OneToMany(mappedBy = "produto")
-	private List<PerguntasEntity> perguntas;  ///
+	private List<PerguntasEntity> perguntas;  //N:N
+	
+	@OneToMany(mappedBy = "produto",cascade = CascadeType.ALL)
+	private List<AvaliacaoProdutosEntity> avaliacaoProduto; //n:n
 
 	public Long getId() {
 		return id;
@@ -85,11 +98,12 @@ public class ProdutoEntity implements Serializable{
 		this.descricao = descricao;
 	}
 
-	public List<Imagem> getImagens() {
+	
+	public Collection<byte[]> getImagens() {
 		return imagens;
 	}
 
-	public void setImagens(List<Imagem> imagens) {
+	public void setImagens(Collection<byte[]> imagens) {
 		this.imagens = imagens;
 	}
 
