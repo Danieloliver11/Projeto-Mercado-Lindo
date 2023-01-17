@@ -49,8 +49,64 @@ public class PedidoEntity implements Serializable{
 	
 	@OneToMany(mappedBy = "id.pedido")
 	private List<ItemPedidoEntity> itemPedidoEntity;
-	
 
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public LocalDate getDataPedido() {
+		return dataPedido;
+	}
+
+	public void setDataPedido(LocalDate dataPedido) {
+		this.dataPedido = dataPedido;
+	}
+
+	public String getObservacao() {
+		return observacao;
+	}
+
+	public void setObservacao(String observacao) {
+		this.observacao = observacao;
+	}
+
+	public StatusPedidoEnum getStatusPedidoEnum() {
+		return statusPedidoEnum;
+	}
+
+	public void setStatusPedidoEnum(StatusPedidoEnum statusPedidoEnum) {
+		this.statusPedidoEnum = statusPedidoEnum;
+	}
+
+	public BigDecimal getDesconto() {
+		return desconto;
+	}
+
+	public void setDesconto(BigDecimal desconto) {
+		this.desconto = desconto;
+	}
+
+	public PessoaEntity getPessoa() {
+		return pessoa;
+	}
+
+	public void setPessoa(PessoaEntity pessoa) {
+		this.pessoa = pessoa;
+	}
+
+	public List<ItemPedidoEntity> getItemPedidoEntity() {
+		return itemPedidoEntity;
+	}
+
+	public void setItemPedidoEntity(List<ItemPedidoEntity> itemPedidoEntity) {
+		this.itemPedidoEntity = itemPedidoEntity;
+	}
+	
+	
 	
 	
 
