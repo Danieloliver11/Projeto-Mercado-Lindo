@@ -19,8 +19,6 @@ public class BoletoEntity extends PagamentoEntity {
 	
 	@Column(name = "DATA_PAGAMENTO", nullable = false)
 	private ZonedDateTime dataPagamento;
-	
-	
 
 	public ZonedDateTime getDataVencimento() {
 		return dataVencimento;
@@ -37,9 +35,5 @@ public class BoletoEntity extends PagamentoEntity {
 	public void setDataPagamento(ZonedDateTime dataPagamento) {
 		this.dataPagamento = dataPagamento;
 	}
-	
-	
-	
-	
 
 }
