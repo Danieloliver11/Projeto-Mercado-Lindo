@@ -47,6 +47,9 @@ public class PedidoEntity implements Serializable{
 	@JoinColumn(name = "ID_PESSOA", nullable = false)
 	private PessoaEntity pessoa;
 	
+	@ManyToOne
+	private PagamentoEntity pagamento;
+	
 	@OneToMany(mappedBy = "id.pedido")
 	private List<ItemPedidoEntity> itemPedidoEntity;
 
@@ -105,6 +108,16 @@ public class PedidoEntity implements Serializable{
 	public void setItemPedidoEntity(List<ItemPedidoEntity> itemPedidoEntity) {
 		this.itemPedidoEntity = itemPedidoEntity;
 	}
+
+	public PagamentoEntity getPagamento() {
+		return pagamento;
+	}
+
+	public void setPagamento(PagamentoEntity pagamento) {
+		this.pagamento = pagamento;
+	}
+	
+	
 	
 	
 	

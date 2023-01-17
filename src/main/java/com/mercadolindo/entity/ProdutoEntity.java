@@ -13,6 +13,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -45,7 +46,7 @@ public class ProdutoEntity implements Serializable{
 	
 	@Lob
 	@ElementCollection
-	@CollectionTable(name = "TB_IMAGEM")
+	@CollectionTable(name = "TB_IMAGEM", joinColumns = @JoinColumn(name ="ID_PRODUTO"))
 	@Column(name = "IMAGEM")
 	private Collection<byte[]> imagens;
 	

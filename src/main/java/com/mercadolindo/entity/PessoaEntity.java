@@ -57,9 +57,8 @@ public class PessoaEntity implements Serializable{
 	@JoinColumn(name = "USUARIO")
 	private UsuarioEntity usuario;
 	
-	@OneToOne
-	@JoinColumn(name = "ID_ENDERECO", nullable = false)
-	private EnderecoEntity endereco;
+	@OneToMany(mappedBy = "pessoa",cascade = CascadeType.ALL)
+	private List<EnderecoEntity> enderecos;
 	
 	@OneToMany(mappedBy = "pessoa",cascade = CascadeType.ALL)
 	private List<PedidoEntity> pedidos;
@@ -130,12 +129,29 @@ public class PessoaEntity implements Serializable{
 		this.usuario = usuario;
 	}
 
-	public EnderecoEntity getEndereco() {
-		return endereco;
+
+	public List<EnderecoEntity> getEnderecos() {
+		return enderecos;
 	}
 
-	public void setEndereco(EnderecoEntity endereco) {
-		this.endereco = endereco;
+	public void setEnderecos(List<EnderecoEntity> enderecos) {
+		this.enderecos = enderecos;
+	}
+
+	public List<PerguntasEntity> getPerguntas() {
+		return perguntas;
+	}
+
+	public void setPerguntas(List<PerguntasEntity> perguntas) {
+		this.perguntas = perguntas;
+	}
+
+	public List<AvaliacaoProdutosEntity> getAvaliacaoProduto() {
+		return avaliacaoProduto;
+	}
+
+	public void setAvaliacaoProduto(List<AvaliacaoProdutosEntity> avaliacaoProduto) {
+		this.avaliacaoProduto = avaliacaoProduto;
 	}
 
 	public List<PedidoEntity> getPedidos() {
