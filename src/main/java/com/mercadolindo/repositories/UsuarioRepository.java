@@ -8,8 +8,8 @@ import org.springframework.stereotype.Repository;
 import com.mercadolindo.entity.UsuarioEntity;
 
 @Repository
-public interface UserRepository extends JpaRepository<UsuarioEntity, Long>{
+public interface UsuarioRepository extends JpaRepository<UsuarioEntity, Long>{
 
-	Optional<UsuarioEntity> findByNomeUsuario(String username);
+	Optional<UsuarioEntity> findByNomeUsuario(String nomeUsuario);
 
 }
