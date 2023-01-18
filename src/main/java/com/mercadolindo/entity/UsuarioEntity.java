@@ -5,7 +5,9 @@ import static com.mercadolindo.utils.Constante.AMERICA_SAO_PAULO;
 import java.io.Serializable;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,9 +15,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
@@ -52,6 +58,12 @@ public class UsuarioEntity implements  UserDetails , Serializable {
 	
 	@OneToOne(mappedBy = "usuario",cascade = CascadeType.ALL)
 	private PessoaEntity pessoa;
+	
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "TB_USUARIOS_FUNCOES",
+	joinColumns = @JoinColumn(name = "usuario_id") ,
+	inverseJoinColumns = @JoinColumn(name = "funcao_id"))
+	private List<FuncaoEntity> roles;
 	
 	public UsuarioEntity() {
 		super();
@@ -133,7 +145,7 @@ public class UsuarioEntity implements  UserDetails , Serializable {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return null;
+		return Arrays.asList();
 	}
 
 	@Override

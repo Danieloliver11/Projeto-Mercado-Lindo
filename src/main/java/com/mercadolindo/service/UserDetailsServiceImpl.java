@@ -6,17 +6,17 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mercadolindo.repositories.UserRepository;
+import com.mercadolindo.repositories.UsuarioRepository;
 
 @Service
 @Transactional
 public class UserDetailsServiceImpl implements UserDetailsService{
 
-	public UserDetailsServiceImpl(UserRepository userRepository) {
+	public UserDetailsServiceImpl(UsuarioRepository userRepository) {
 		this.userRepository = userRepository;
 	}
 
-	private final UserRepository userRepository;
+	private final UsuarioRepository userRepository;
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) {
