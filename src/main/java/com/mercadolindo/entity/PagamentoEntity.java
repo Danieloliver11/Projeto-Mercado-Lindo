@@ -3,23 +3,23 @@ package com.mercadolindo.entity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.Table;
+
 import com.mercadolindo.enums.StatusPedidoEnum;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
-import jakarta.persistence.Table;
-
 @Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "TB_PAGAMENTO")
-public class PagamentoEntity implements Serializable{
+public abstract class PagamentoEntity implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
@@ -32,6 +32,7 @@ public class PagamentoEntity implements Serializable{
 	private BigDecimal valor;
 	
 	@Enumerated(EnumType.STRING)
+	@Column(name = "STATUS")
 	private StatusPedidoEnum status;
 
 	public Long getId() {

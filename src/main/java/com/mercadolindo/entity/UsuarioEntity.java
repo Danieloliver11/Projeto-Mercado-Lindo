@@ -5,21 +5,31 @@ import static com.mercadolindo.utils.Constante.AMERICA_SAO_PAULO;
 import java.io.Serializable;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
-import jakarta.persistence.Table;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
+import javax.persistence.Table;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
 @Table(name = "TB_USUARIO")
-public class UsuarioEntity  implements Serializable {
+public class UsuarioEntity implements  UserDetails , Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -48,6 +58,12 @@ public class UsuarioEntity  implements Serializable {
 	
 	@OneToOne(mappedBy = "usuario",cascade = CascadeType.ALL)
 	private PessoaEntity pessoa;
+	
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "TB_USUARIOS_FUNCOES",
+	joinColumns = @JoinColumn(name = "usuario_id") ,
+	inverseJoinColumns = @JoinColumn(name = "funcao_id"))
+	private List<FuncaoEntity> roles;
 	
 	public UsuarioEntity() {
 		super();
@@ -125,5 +141,40 @@ public class UsuarioEntity  implements Serializable {
 	@PreUpdate
 	private void onUpdate() {
 		ultimoAcesso = ZonedDateTime.now(ZoneId.of(AMERICA_SAO_PAULO));
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return Arrays.asList();
+	}
+
+	@Override
+	public String getPassword() {
+		return this.senha.toString();
+	}
+
+	@Override
+	public String getUsername() {
+		return this.nomeUsuario;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return true;
 	}
 }

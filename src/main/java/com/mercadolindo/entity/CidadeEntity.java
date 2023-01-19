@@ -4,12 +4,14 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
 
 @Entity
 @Table(name = "TB_CIDADE")
@@ -25,7 +27,7 @@ public class CidadeEntity implements Serializable{
 	@Column(name = "NOME", nullable = false,length = 50)
 	private String nome;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "ID_UF", nullable = false)
 	private EstadoEntity estado;
 
