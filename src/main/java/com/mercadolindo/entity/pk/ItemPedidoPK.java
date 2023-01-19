@@ -2,12 +2,12 @@ package com.mercadolindo.entity.pk;
 
 import java.io.Serializable;
 
+import javax.persistence.Embeddable;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
 import com.mercadolindo.entity.PedidoEntity;
 import com.mercadolindo.entity.ProdutoEntity;
-
-import jakarta.persistence.Embeddable;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 
 @Embeddable
 public class ItemPedidoPK implements Serializable {

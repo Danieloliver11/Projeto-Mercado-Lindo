@@ -17,9 +17,9 @@ public class WebSecurityConfig {
 		httpBasic().
 		and().
 		authorizeHttpRequests()
-		.requestMatchers(HttpMethod.GET , "//**").permitAll()
-		.requestMatchers(HttpMethod.POST , "//**").hasRole("ADMINISTRADOR")
-		.requestMatchers(HttpMethod.DELETE , "//**").hasRole("USUARIO")
+		.antMatchers(HttpMethod.GET , "//**").permitAll()
+		.antMatchers(HttpMethod.POST , "//**").hasRole("ADMINISTRADOR")
+		.antMatchers(HttpMethod.DELETE , "//**").hasRole("USUARIO")
 		.anyRequest().authenticated()
 		.and()
 		.csrf().disable();
