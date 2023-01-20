@@ -2,7 +2,6 @@ package com.mercadolindo.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -41,14 +40,11 @@ public class ProdutoEntity implements Serializable{
 	@Column(name = "DESCRICACAO")
 	private String descricao;
 	
-//	@OneToMany(mappedBy = "produto",cascade = CascadeType.ALL)
-//	private List<Imagem> imagens;
-	
 	@Lob
 	@ElementCollection
 	@CollectionTable(name = "TB_IMAGEM", joinColumns = @JoinColumn(name ="ID_PRODUTO"))
 	@Column(name = "IMAGEM")
-	private Collection<byte[]> imagens;
+	private List<byte[]> imagens;
 	
 	@OneToMany(mappedBy = "id.produto")
 	private List<ItemPedidoEntity> itemPedidos;
@@ -100,20 +96,12 @@ public class ProdutoEntity implements Serializable{
 	}
 
 	
-	public Collection<byte[]> getImagens() {
+	public List<byte[]> getImagens() {
 		return imagens;
 	}
 
-	public void setImagens(Collection<byte[]> imagens) {
+	public void setImagens(List<byte[]> imagens) {
 		this.imagens = imagens;
-	}
-
-	public List<ItemPedidoEntity> getItemPedidoEntity() {
-		return itemPedidos;
-	}
-
-	public void setItemPedidoEntity(List<ItemPedidoEntity> itemPedidos) {
-		this.itemPedidos = itemPedidos;
 	}
 
 	public List<ItemPedidoEntity> getItemPedidos() {
