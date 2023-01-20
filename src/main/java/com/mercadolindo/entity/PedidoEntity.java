@@ -21,7 +21,7 @@ import javax.persistence.Table;
 import com.mercadolindo.enums.StatusPedidoEnum;
 
 @Entity
-@Table(name = "TB_ESTADO")
+@Table(name = "TB_PEDIDO")
 public class PedidoEntity implements Serializable{
 
 	private static final long serialVersionUID = 1L;

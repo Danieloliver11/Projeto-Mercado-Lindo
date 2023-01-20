@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "TB_ESTADO")
+@Table(name = "TB_UF")
 public class EstadoEntity implements Serializable{
 
 	private static final long serialVersionUID = 1L;
@@ -20,8 +20,13 @@ public class EstadoEntity implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(name = "NOME", nullable = false)
+	@Column(name = "NOME_ESTADO", nullable = false)
 	private String nome;
+	
+
+	public EstadoEntity() {
+		super();
+	}
 
 	public Long getId() {
 		return id;
