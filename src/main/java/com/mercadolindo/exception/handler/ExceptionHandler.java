@@ -82,11 +82,14 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler {
 	@org.springframework.web.bind.annotation.ExceptionHandler(NaoEncontradoException.class)
 	public ResponseEntity<Object> handleNaoEncontradoException(NaoEncontradoException e, ServletWebRequest request) {
 		logger.warn(e.getMessage());
+		
+		ExceptionResponseVO bodyExceptionResponse = criarExceptionResponse(TITLE_DADOS_JA_CADASTRADOS,
+				TYPE_VALIDACAO_PARAMETROS, Arrays.asList(e.getMessage()), request.getRequest().getRequestURI());
 
 		HttpHeaders header = new HttpHeaders();
 		header.add(HEADER_MESSAGE, e.getMessage());
 
-		return handleExceptionInternal(e, null, header, NOT_FOUND, request);
+		return handleExceptionInternal(e, bodyExceptionResponse, header, NOT_FOUND, request);
 	}
 
 	

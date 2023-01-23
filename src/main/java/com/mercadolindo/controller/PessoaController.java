@@ -1,5 +1,8 @@
 package com.mercadolindo.controller;
 
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,10 +17,11 @@ import com.mercadolindo.service.PessoaService;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class PessoaController {
 	
+	@Autowired
 	private PessoaService pessoaService;
 	
 	@PostMapping
-	public Void salvarPessoa(@RequestBody PessoaCadastroVO pessoaVO) {
+	public Void salvarPessoa(@Valid @RequestBody PessoaCadastroVO pessoaVO) {
 		return pessoaService.salvarPessoa(pessoaVO);
 	}
 

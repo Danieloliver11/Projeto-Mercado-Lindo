@@ -24,7 +24,8 @@ import org.hibernate.validator.constraints.br.CPF;
 import com.mercadolindo.enums.SexoEnum;
 
 @Entity
-@Table(name = "TB_PESSOA", uniqueConstraints={@UniqueConstraint(columnNames={"cpf"})})
+@Table(name = "TB_PESSOA", uniqueConstraints={
+		@UniqueConstraint(name = "unq_cpf" ,columnNames={"cpf"})})
 public class PessoaEntity implements Serializable{
 
 	private static final long serialVersionUID = 1L;
@@ -53,7 +54,7 @@ public class PessoaEntity implements Serializable{
 	@Column(name = "EMAIL", nullable = false)
 	private String email;
 	
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "USUARIO")
 	private UsuarioEntity usuario;
 	

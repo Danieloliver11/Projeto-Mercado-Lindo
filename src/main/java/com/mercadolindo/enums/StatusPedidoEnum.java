@@ -2,9 +2,9 @@ package com.mercadolindo.enums;
 
 public enum StatusPedidoEnum {
 	
-	PENDENTE(1,"Pendente"),
-	PAGO(2,"Pago"),
-	CANCELADO(3,"Cancelado");
+	ATIVO(1,"Ativo"),
+	BLOQUEADO(2,"Bloqueado"),
+	DESATIVADO(3,"Desativado");
 	
 	Integer inteiro;
 	String string;

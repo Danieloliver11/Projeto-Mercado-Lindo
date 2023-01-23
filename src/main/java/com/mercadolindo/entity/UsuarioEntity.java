@@ -27,6 +27,8 @@ import javax.persistence.Table;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.mercadolindo.enums.FuncaoNome;
+
 @Entity
 @Table(name = "TB_USUARIO")
 public class UsuarioEntity implements  UserDetails , Serializable {
@@ -44,9 +46,6 @@ public class UsuarioEntity implements  UserDetails , Serializable {
 	@Column(name = "ULTIMO_ACESSO", nullable = false)
 	private ZonedDateTime ultimoAcesso;
 	
-	@Column(name = "PERMISSAO", nullable = false)
-	private String permissao;
-	
 	@Column(name = "TOKEN")
 	private String token;
 	
@@ -54,9 +53,9 @@ public class UsuarioEntity implements  UserDetails , Serializable {
 	private String login;
 	
 	@Column(name = "SENHA", nullable = false)
-	private Integer senha;
+	private String senha;
 	
-	@OneToOne(mappedBy = "usuario",cascade = CascadeType.ALL)
+	@OneToOne(mappedBy = "usuario")
 	private PessoaEntity pessoa;
 	
 	@ManyToMany(fetch = FetchType.LAZY)
@@ -93,12 +92,12 @@ public class UsuarioEntity implements  UserDetails , Serializable {
 		this.ultimoAcesso = ultimoAcesso;
 	}
 
-	public String getPermissao() {
-		return permissao;
+	public List<FuncaoEntity> getRoles() {
+		return roles;
 	}
 
-	public void setPermissao(String permissao) {
-		this.permissao = permissao;
+	public void setRoles(List<FuncaoEntity> roles) {
+		this.roles = roles;
 	}
 
 	public String getToken() {
@@ -117,11 +116,11 @@ public class UsuarioEntity implements  UserDetails , Serializable {
 		this.login = login;
 	}
 
-	public Integer getSenha() {
+	public String getSenha() {
 		return senha;
 	}
 
-	public void setSenha(Integer senha) {
+	public void setSenha(String senha) {
 		this.senha = senha;
 	}
 
