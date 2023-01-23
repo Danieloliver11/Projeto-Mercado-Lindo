@@ -3,13 +3,13 @@ package com.mercadolindo.entity.factory;
 import java.math.BigDecimal;
 
 import com.mercadolindo.entity.ProdutoEntity;
-import com.mercadolindo.model.ProdutoCadastroVO;
+import com.mercadolindo.model.ProdutoVO;
 
 public class ProdutoEntityFactory {
 
 	ProdutoEntityFactory(){}
 	
-	public static ProdutoEntity toEntity(ProdutoCadastroVO vo) {
+	public static ProdutoEntity toEntity(ProdutoVO vo) {
 		
 		ProdutoEntity entity = new ProdutoEntity();
 		entity.setDescricao(vo.getDescricao());

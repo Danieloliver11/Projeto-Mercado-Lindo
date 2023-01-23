@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 
-public class ProdutoCadastroVO {
+public class ProdutoVO {
 
 	private Long id;
 	
