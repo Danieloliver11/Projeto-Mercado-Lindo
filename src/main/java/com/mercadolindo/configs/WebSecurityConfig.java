@@ -18,6 +18,9 @@ public class WebSecurityConfig {
 		and().
 		authorizeHttpRequests()
 		.antMatchers(HttpMethod.GET , "//**").permitAll()
+		.antMatchers(HttpMethod.POST , "//**").permitAll()
+		.antMatchers(HttpMethod.PUT , "//**").permitAll()
+		.antMatchers(HttpMethod.DELETE , "//**").permitAll()
 		.and()
 		.csrf().disable();
 		return http.build();
