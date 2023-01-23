@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -45,7 +46,7 @@ public class PedidoEntity implements Serializable{
 	private BigDecimal desconto;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "ID_PESSOA", nullable = false)
+	@JoinColumn(name = "ID_PESSOA", nullable = false, foreignKey = @ForeignKey(name ="FK_PEDIDO_PESSOA"))
 	private PessoaEntity pessoa;
 	
 	@ManyToOne(fetch = FetchType.LAZY)

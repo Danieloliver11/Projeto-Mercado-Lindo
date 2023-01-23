@@ -3,6 +3,9 @@ package com.mercadolindo.model;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
+import java.util.List;
+
+import org.hibernate.validator.constraints.br.CPF;
 
 import com.mercadolindo.enums.FuncaoNome;
 import com.mercadolindo.enums.SexoEnum;
@@ -14,7 +17,7 @@ public class PessoaCadastroVO implements Serializable {
 	private Long id;
 	
 	private String nome;
-	
+	@CPF
 	private String cpf;
 	
 	private LocalDate dataNascimento;
@@ -26,12 +29,10 @@ public class PessoaCadastroVO implements Serializable {
 	private String nomeUsuario;
 	
 	private String senha;
-	
-	private ZonedDateTime ultimoAcesso;
-	
-	private FuncaoNome flagAdm;
-	
+					
 	private String token;
+	
+	private List<EnderecoVo> enderecos;
 	
 	
 
@@ -99,22 +100,6 @@ public class PessoaCadastroVO implements Serializable {
 		this.senha = senha;
 	}
 
-	public ZonedDateTime getUltimoAcesso() {
-		return ultimoAcesso;
-	}
-
-	public void setUltimoAcesso(ZonedDateTime ultimoAcesso) {
-		this.ultimoAcesso = ultimoAcesso;
-	}
-
-	public FuncaoNome getFlagAdm() {
-		return flagAdm;
-	}
-
-	public void setFlagAdm(FuncaoNome flagAdm) {
-		this.flagAdm = flagAdm;
-	}
-
 	public String getToken() {
 		return token;
 	}
@@ -122,5 +107,21 @@ public class PessoaCadastroVO implements Serializable {
 	public void setToken(String token) {
 		this.token = token;
 	}
+
+	public List<EnderecoVo> getEnderecos() {
+		return enderecos;
+	}
+
+	public void setEnderecos(List<EnderecoVo> enderecos) {
+		this.enderecos = enderecos;
+	}
+
+	
+
+	
+
+	
+	
+	
 	
 }

@@ -8,9 +8,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "TB_UF")
+@Table(name = "TB_UF",uniqueConstraints={
+		@UniqueConstraint(name = "unq_nome_estado" ,columnNames={"NOME_ESTADO"})})
 public class EstadoEntity implements Serializable{
 
 	private static final long serialVersionUID = 1L;

@@ -32,17 +32,16 @@ public class ProdutoEntity implements Serializable{
 	@Column(name = "NOME", nullable = false)
 	private String nome;
 	
-	@Column(name = "PRECO", nullable = false)
+	@Column(name = "PRECO", precision = 19, scale = 2, nullable = false)
 	private BigDecimal preco;
 	
 	@Column(name = "QUANTIDADE", nullable = false)
 	private Integer quantidade;
 	
-	@Column(name = "DESCRICACAO")
+	@Lob
+	@Column(name = "DESCRICAO")
+//	@Column(columnDefinition = "varchar (300) not null default 'DESCRICAO' ")
 	private String descricao;
-	
-//	@OneToMany(mappedBy = "produto",cascade = CascadeType.ALL)
-//	private List<Imagem> imagens;
 	
 	@Lob
 	@ElementCollection
@@ -52,12 +51,12 @@ public class ProdutoEntity implements Serializable{
 	
 	@OneToMany(mappedBy = "id.produto")
 	private List<ItemPedidoEntity> itemPedidos;
-	
+	//N:N
 	@OneToMany(mappedBy = "produto")
-	private List<PerguntasEntity> perguntas;  //N:N
-	
+	private List<PerguntasEntity> perguntas;  
+	 //n:n
 	@OneToMany(mappedBy = "produto",cascade = CascadeType.ALL)
-	private List<AvaliacaoProdutosEntity> avaliacaoProduto; //n:n
+	private List<AvaliacaoProdutosEntity> avaliacaoProduto;
 
 	public Long getId() {
 		return id;

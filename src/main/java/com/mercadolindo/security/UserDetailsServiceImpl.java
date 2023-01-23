@@ -1,4 +1,4 @@
-package com.mercadolindo.service;
+package com.mercadolindo.security;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
