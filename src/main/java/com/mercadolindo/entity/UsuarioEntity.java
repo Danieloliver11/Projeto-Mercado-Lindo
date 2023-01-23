@@ -50,11 +50,11 @@ public class UsuarioEntity implements  UserDetails , Serializable {
 	@Column(name = "TOKEN")
 	private String token;
 	
-	@Column(name = "LOGIN", nullable = false)
+	@Column(name = "LOGIN", nullable = false) //
 	private String login;
 	
 	@Column(name = "SENHA", nullable = false)
-	private Integer senha;
+	private String senha;
 	
 	@OneToOne(mappedBy = "usuario",cascade = CascadeType.ALL)
 	private PessoaEntity pessoa;
@@ -117,14 +117,14 @@ public class UsuarioEntity implements  UserDetails , Serializable {
 		this.login = login;
 	}
 
-	public Integer getSenha() {
+	public String getSenha() {
 		return senha;
 	}
-
-	public void setSenha(Integer senha) {
+	
+	public void setSenha(String senha) {
 		this.senha = senha;
 	}
-
+	
 	public PessoaEntity getPessoa() {
 		return pessoa;
 	}
@@ -150,7 +150,7 @@ public class UsuarioEntity implements  UserDetails , Serializable {
 
 	@Override
 	public String getPassword() {
-		return this.senha.toString();
+		return this.senha;
 	}
 
 	@Override

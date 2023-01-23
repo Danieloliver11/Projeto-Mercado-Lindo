@@ -3,6 +3,7 @@ package com.mercadolindo.entity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
@@ -28,7 +29,7 @@ public class ProdutoEntity implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(name = "NOME", nullable = false)
+	@Column(name = "NOME", nullable = false , length = 150)
 	private String nome;
 	
 	@Column(name = "PRECO", nullable = false)
@@ -37,15 +38,18 @@ public class ProdutoEntity implements Serializable{
 	@Column(name = "QUANTIDADE", nullable = false)
 	private Integer quantidade;
 	
-	@Column(name = "DESCRICACAO")
+	@Column(name = "DESCRICAO" , length = 150)
 	private String descricao;
+	
+	@Column(name = "FLAG_FRETE_GRATIS" , nullable = false)
+	private boolean freteGratis;
 	
 	@Lob
 	@ElementCollection
 	@CollectionTable(name = "TB_IMAGEM", joinColumns = @JoinColumn(name ="ID_PRODUTO"))
 	@Column(name = "IMAGEM")
 	private List<byte[]> imagens;
-	
+    
 	@OneToMany(mappedBy = "id.produto")
 	private List<ItemPedidoEntity> itemPedidos;
 	
@@ -94,7 +98,14 @@ public class ProdutoEntity implements Serializable{
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
+		
+	public boolean isFreteGratis() {
+		return freteGratis;
+	}
 
+	public void setFreteGratis(boolean freteGratis) {
+		this.freteGratis = freteGratis;
+	}
 	
 	public List<byte[]> getImagens() {
 		return imagens;
@@ -119,13 +130,22 @@ public class ProdutoEntity implements Serializable{
 	public void setPerguntas(List<PerguntasEntity> perguntas) {
 		this.perguntas = perguntas;
 	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
 
-	
-	
-	
-	
-	
-	
-	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ProdutoEntity other = (ProdutoEntity) obj;
+		return Objects.equals(id, other.id);
+	}
 
 }
