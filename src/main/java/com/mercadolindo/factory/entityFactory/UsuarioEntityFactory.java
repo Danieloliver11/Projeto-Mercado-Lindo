@@ -3,7 +3,7 @@ package com.mercadolindo.factory.entityFactory;
 import com.mercadolindo.entity.UsuarioEntity;
 import com.mercadolindo.model.PessoaCadastroVO;
 
-public class UsuarioFactory {
+public class UsuarioEntityFactory {
 
 	public static UsuarioEntity converterParaEntity(PessoaCadastroVO pessoaVO) {
 		

@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
@@ -38,6 +40,7 @@ public class EnderecoEntity implements Serializable{
 	@Column(name = "CEP", nullable = false)
 	private String cep;
 	
+	@Enumerated(EnumType.STRING)
 	@Column(name = "FLAGE_ENDERECO_PRINCIPAL", nullable = false)
 	private SimNaoEnum flagEnderecoPrincipal;
 	

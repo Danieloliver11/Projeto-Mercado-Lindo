@@ -2,12 +2,10 @@ package com.mercadolindo.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.ZonedDateTime;
 import java.util.List;
 
 import org.hibernate.validator.constraints.br.CPF;
 
-import com.mercadolindo.enums.FuncaoNome;
 import com.mercadolindo.enums.SexoEnum;
 
 public class PessoaCadastroVO implements Serializable {
