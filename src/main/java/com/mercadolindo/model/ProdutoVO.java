@@ -1,10 +1,13 @@
 package com.mercadolindo.model;
 
 import java.math.BigDecimal;
+import java.util.List;
 
+import javax.validation.Valid;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
@@ -30,6 +33,10 @@ public class ProdutoVO {
 	@Size(max = 150 , message = "O campo descricao deve obter no máximo {max} caracteres")
 	@NotBlank(message = "O campo descricao é obrigatório!")
 	private String descricao;
+	
+	@Valid
+	@NotEmpty
+	private List<CategoriaVO> categorias;
 	
 	private boolean freteGratis;
 	
@@ -66,6 +73,14 @@ public class ProdutoVO {
 	
 	public boolean isFreteGratis() {
 		return freteGratis;
+	}
+	
+	public List<CategoriaVO> getCategorias() {
+		return categorias;
+	}
+	
+	public void setCategorias(List<CategoriaVO> categorias) {
+		this.categorias = categorias;
 	}
 	
 }

@@ -10,11 +10,14 @@ import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -59,6 +62,15 @@ public class ProdutoEntity implements Serializable{
 	@OneToMany(mappedBy = "produto",cascade = CascadeType.ALL)
 	private List<AvaliacaoProdutosEntity> avaliacaoProduto; //n:n
 
+	@ManyToMany
+    @JoinTable(name = "TB_PRODUTOS_CATEGORIAS",
+            joinColumns = @JoinColumn(name = "produto_id", nullable = false,
+                    foreignKey = @ForeignKey(name = "fk_produto_categoria_produto")),
+            inverseJoinColumns = @JoinColumn(name = "categoria_id", nullable = false,
+                    foreignKey = @ForeignKey(name = "fk_produto_categoria_categoria")))
+    private List<CategoriaEntity> categorias;
+
+	
 	public Long getId() {
 		return id;
 	}
@@ -129,6 +141,14 @@ public class ProdutoEntity implements Serializable{
 
 	public void setPerguntas(List<PerguntasEntity> perguntas) {
 		this.perguntas = perguntas;
+	}
+	
+	public List<CategoriaEntity> getCategorias() {
+		return categorias;
+	}
+	
+	public void setCategorias(List<CategoriaEntity> categorias) {
+		this.categorias = categorias;
 	}
 	
 	@Override

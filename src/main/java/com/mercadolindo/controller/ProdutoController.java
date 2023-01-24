@@ -20,7 +20,7 @@ import com.mercadolindo.model.ProdutoVO;
 import com.mercadolindo.service.ProdutoService;
 
 @RestController
-@CrossOrigin(allowedHeaders = "*" , maxAge = 1600)
+@CrossOrigin(allowedHeaders = "*", maxAge = 1600)
 @RequestMapping("/produtos")
 class ProdutoController {
 
@@ -32,20 +32,16 @@ class ProdutoController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	ProdutoVO cadastrar(@Valid @RequestBody ProdutoVO produto) {
+	public ProdutoVO cadastrar(@Valid @RequestBody ProdutoVO produto) {
 		return produtoService.cadastrar(produto);
 	}
-	
+
 	@GetMapping("/filtros")
-	Page<ProdutoVO> pesquisarProdutoPorFiltro(
-			@RequestParam(required = false) String nome, 
-			@RequestParam(required = false) BigDecimal valorMinimo ,
-			@RequestParam(required = false) BigDecimal valorMaximo ,
-			@RequestParam(required = false) boolean freteGratis ,
-			@RequestParam(required = false) Long idUF
-			, Pageable pageRequest){
-		return produtoService.pesquisarProdutoPorFiltro(nome , valorMinimo , valorMaximo , freteGratis, idUF , pageRequest);
+	public Page<ProdutoVO> pesquisarProdutoPorFiltro(@RequestParam(required = false) String nome,
+			@RequestParam(required = false) BigDecimal valorMinimo,
+			@RequestParam(required = false) BigDecimal valorMaximo, @RequestParam(required = false) boolean freteGratis,
+			@RequestParam(required = false) Long idUF, Pageable pageRequest) {
+		return produtoService.pesquisarProdutoPorFiltro(nome, valorMinimo, valorMaximo, freteGratis, idUF, pageRequest);
 	}
-	
-	
+
 }

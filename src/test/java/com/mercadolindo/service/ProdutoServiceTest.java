@@ -26,7 +26,7 @@ class ProdutoServiceTest {
 
 	@Mock
 	ProdutoRepository produtoRepository;
-
+	
 	@BeforeAll
 	public void init() {
 		MockitoAnnotations.openMocks(this);
@@ -36,9 +36,10 @@ class ProdutoServiceTest {
 	void cadastrarProduto() {	
 
 		ProdutoVO cadastro = produtoService.cadastrar(vo);
+		
 		assertNotNull(cadastro.getNome());
 	}
-	
+
 	@Test
 	void nullPointerAoPesquisarProduto() {	
 		
@@ -46,7 +47,7 @@ class ProdutoServiceTest {
 		
 	}
 
-
+	
 	private ProdutoVO gerarProduto() {
 		ProdutoVO vo = new ProdutoVO();
 		vo.setQuantidade(100);
