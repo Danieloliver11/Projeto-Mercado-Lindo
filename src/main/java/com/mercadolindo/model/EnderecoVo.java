@@ -2,8 +2,10 @@ package com.mercadolindo.model;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mercadolindo.enums.SimNaoEnum;
 
+@JsonIgnoreProperties(value= "nomeCidade", allowSetters = false, allowGetters  = true)
 public class EnderecoVo implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -14,13 +16,17 @@ public class EnderecoVo implements Serializable {
 	
 	private String nomeRua;
 	
-	private Integer numeroCasa;
+	private String numeroCasa;
 	
 	private String cep;
 	
 	private Long idMunicipio;
 	
-	private SimNaoEnum simNaoEnum;
+	private SimNaoEnum enderecoPrincipal;
+	
+	
+	
+	private String nomeCidade;
 
 	public Long getId() {
 		return id;
@@ -46,11 +52,11 @@ public class EnderecoVo implements Serializable {
 		this.nomeRua = nomeRua;
 	}
 
-	public Integer getNumeroCasa() {
+	public String getNumeroCasa() {
 		return numeroCasa;
 	}
 
-	public void setNumeroCasa(Integer numeroCasa) {
+	public void setNumeroCasa(String numeroCasa) {
 		this.numeroCasa = numeroCasa;
 	}
 
@@ -70,18 +76,29 @@ public class EnderecoVo implements Serializable {
 		this.idMunicipio = idMunicipio;
 	}
 
-	public SimNaoEnum getSimNaoEnum() {
-		return simNaoEnum;
+	public SimNaoEnum getEnderecoPrincipal() {
+		return enderecoPrincipal;
 	}
 
-	public void setSimNaoEnum(SimNaoEnum simNaoEnum) {
-		this.simNaoEnum = simNaoEnum;
+	public void setEnderecoPrincipal(SimNaoEnum enderecoPrincipal) {
+		this.enderecoPrincipal = enderecoPrincipal;
+	}
+	
+	
+
+	public String getNomeCidade() {
+		return nomeCidade;
+	}
+
+	public void setNomeCidade(String nomeCidade) {
+		this.nomeCidade = nomeCidade;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((cep == null) ? 0 : cep.hashCode());
 		result = prime * result + ((numeroCasa == null) ? 0 : numeroCasa.hashCode());
 		return result;
 	}
@@ -95,6 +112,11 @@ public class EnderecoVo implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		EnderecoVo other = (EnderecoVo) obj;
+		if (cep == null) {
+			if (other.cep != null)
+				return false;
+		} else if (!cep.equals(other.cep))
+			return false;
 		if (numeroCasa == null) {
 			if (other.numeroCasa != null)
 				return false;
@@ -102,12 +124,5 @@ public class EnderecoVo implements Serializable {
 			return false;
 		return true;
 	}
-	
-	
-	
-	
-	
-	
-
 
 }

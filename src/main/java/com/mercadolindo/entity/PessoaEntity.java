@@ -25,7 +25,8 @@ import com.mercadolindo.enums.SexoEnum;
 
 @Entity
 @Table(name = "TB_PESSOA", uniqueConstraints={
-		@UniqueConstraint(name = "unq_cpf" ,columnNames={"cpf"})})
+		@UniqueConstraint(name = "unq_cpf" ,columnNames={"cpf"}),
+		@UniqueConstraint(name = "unq_email" ,columnNames={"email"})})
 public class PessoaEntity implements Serializable{
 
 	private static final long serialVersionUID = 1L;
