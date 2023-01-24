@@ -12,7 +12,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
-import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "TB_CATEGORIA",
@@ -26,7 +25,6 @@ public class CategoriaEntity implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@NotBlank
     @Column(length = 100, nullable = false)
     private String nome;
 
