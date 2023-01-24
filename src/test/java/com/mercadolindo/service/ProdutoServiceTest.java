@@ -43,7 +43,7 @@ class ProdutoServiceTest {
 	@Test
 	void nullPointerAoPesquisarProduto() {	
 		
-		assertThrows(NullPointerException.class, () -> produtoService.pesquisarProdutoPorFiltro(null, null, null, false, null, null));
+		assertThrows(NullPointerException.class, () -> produtoService.pesquisarProdutoPorFiltro(null, null, null, false, null, null, null));
 		
 	}
 

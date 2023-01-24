@@ -6,11 +6,14 @@ import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.springframework.data.jpa.domain.Specification;
 
+import com.mercadolindo.entity.CategoriaEntity;
 import com.mercadolindo.entity.ProdutoEntity;
 
 public class ProdutoSpecification implements Specification<ProdutoEntity> {
@@ -24,14 +27,16 @@ public class ProdutoSpecification implements Specification<ProdutoEntity> {
 	
 	//TODO: FINALIZAR ESTE FLUXO DE UF
 	private transient Long idUF;
+	private transient Long idCategoria;
 
 	public ProdutoSpecification(String nome, BigDecimal valorMinimo, BigDecimal valorMaximo, boolean freteGratis,
-			Long idUF) {
+			Long idUF ,Long idCategoria) {
 		this.nome = nome;
 		this.valorMinimo = valorMinimo;
 		this.valorMaximo = valorMaximo;
 		this.freteGratis = freteGratis;
 		this.idUF = idUF;
+		this.idCategoria = idCategoria;
 	}
 
 
@@ -59,6 +64,12 @@ public class ProdutoSpecification implements Specification<ProdutoEntity> {
 		if(idUF != null) {
 //			Predicate uf = criteriaBuilder.equal(root, root);
 //			condicoes.add(uf);
+		}
+		
+		if(idCategoria != null) {
+			Join<ProdutoEntity, CategoriaEntity> joinProdutoCategoria = root.join("categorias" , JoinType.INNER);
+			Predicate categoria = criteriaBuilder.equal(joinProdutoCategoria.get("id"), idCategoria);
+			condicoes.add(categoria);
 		}
 		
 		return criteriaBuilder.and(condicoes.toArray(new Predicate[0]));

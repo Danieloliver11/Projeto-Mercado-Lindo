@@ -40,8 +40,9 @@ class ProdutoController {
 	public Page<ProdutoVO> pesquisarProdutoPorFiltro(@RequestParam(required = false) String nome,
 			@RequestParam(required = false) BigDecimal valorMinimo,
 			@RequestParam(required = false) BigDecimal valorMaximo, @RequestParam(required = false) boolean freteGratis,
-			@RequestParam(required = false) Long idUF, Pageable pageRequest) {
-		return produtoService.pesquisarProdutoPorFiltro(nome, valorMinimo, valorMaximo, freteGratis, idUF, pageRequest);
+			@RequestParam(required = false) Long idUF ,
+			@RequestParam(required = false) Long idCategoria , Pageable pageRequest) {
+		return produtoService.pesquisarProdutoPorFiltro(nome, valorMinimo, valorMaximo, freteGratis, idUF, idCategoria,pageRequest);
 	}
 
 }

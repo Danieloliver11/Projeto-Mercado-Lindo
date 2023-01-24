@@ -75,6 +75,10 @@ public class ProdutoVO {
 		return freteGratis;
 	}
 	
+	public void setFreteGratis(boolean freteGratis) {
+		this.freteGratis = freteGratis;
+	}
+	
 	public List<CategoriaVO> getCategorias() {
 		return categorias;
 	}

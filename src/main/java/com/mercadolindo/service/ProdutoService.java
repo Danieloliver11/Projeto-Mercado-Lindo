@@ -45,9 +45,9 @@ public class ProdutoService {
 	}
 
 	public Page<ProdutoVO> pesquisarProdutoPorFiltro(String nome, BigDecimal valorMinimo, BigDecimal valorMaximo,
-			boolean freteGratis, Long idUF, Pageable pageRequest) {
+			boolean freteGratis, Long idUF, Long idCategoria, Pageable pageRequest) {
 		
-		Page<ProdutoEntity> produtos = produtoRepository.findAll(new ProdutoSpecification(nome , valorMinimo , valorMaximo , freteGratis, idUF) , pageRequest);
+		Page<ProdutoEntity> produtos = produtoRepository.findAll(new ProdutoSpecification(nome , valorMinimo , valorMaximo , freteGratis, idCategoria ,idUF) , pageRequest);
 		
 		return ProdutoVOFactory.pageEntityToPageVO(produtos);
 	}
