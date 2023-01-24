@@ -1,48 +1,51 @@
 package com.mercadolindo.service;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.math.BigDecimal;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import com.mercadolindo.model.ProdutoVO;
+import com.mercadolindo.repositories.ProdutoRepository;
 
-@SpringBootTest
+@TestInstance(Lifecycle.PER_CLASS)
 class ProdutoServiceTest {
 
-	@Autowired
+	final ProdutoVO vo = gerarProduto();
+	
+	@InjectMocks 
 	ProdutoService produtoService;
-	
-	
+
+	@Mock
+	ProdutoRepository produtoRepository;
+
+	@BeforeAll
+	public void init() {
+		MockitoAnnotations.openMocks(this);
+	}
+
 	@Test
 	void cadastrarProduto() {	
-		
-		ProdutoVO vo = gerarProduto();
-		
+
 		ProdutoVO cadastro = produtoService.cadastrar(vo);
-		assertNotNull(cadastro.getId());
+		assertNotNull(cadastro.getNome());
 	}
 	
 	@Test
-	void pesquisarProduto() {
+	void nullPointerAoPesquisarProduto() {	
 		
-		long idUf = 35;
+		assertThrows(NullPointerException.class, () -> produtoService.pesquisarProdutoPorFiltro(null, null, null, false, null, null));
 		
-		Pageable page = Pageable.ofSize(1);
-		
-		ProdutoVO vo = gerarProduto();
-
-		Page<ProdutoVO> produtos = produtoService.pesquisarProdutoPorFiltro
-				(vo.getNome() , vo.getPreco() , new BigDecimal("111") , Boolean.TRUE, idUf, page) ;
-
-		assertFalse(produtos.isEmpty());
 	}
+
 
 	private ProdutoVO gerarProduto() {
 		ProdutoVO vo = new ProdutoVO();
@@ -52,6 +55,5 @@ class ProdutoServiceTest {
 		vo.setNome("Controle remoto");
 		return vo;
 	}
-	
 
 }

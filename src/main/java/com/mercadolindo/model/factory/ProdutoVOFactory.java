@@ -25,5 +25,5 @@ public class ProdutoVOFactory{
 	public static Page<ProdutoVO> pageEntityToPageVO(Page<ProdutoEntity> produtos) {
 		return produtos.map(ProdutoVOFactory::toVO);
 	}
-	
+
 }
