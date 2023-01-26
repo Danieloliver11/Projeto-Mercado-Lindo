@@ -7,10 +7,8 @@ import com.mercadolindo.exception.ParametroInvalidoException;
 
 public class VerificaDuplicadosUtils {
 	
-	private VerificaDuplicadosUtils() {
-	    throw new IllegalStateException("Classe Utilitária");
-	  }
-	
+	VerificaDuplicadosUtils(){}
+
 	public static void verificaDuplicado(List<?> lista) {
 
 		lista.forEach(x -> {
