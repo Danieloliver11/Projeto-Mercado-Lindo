@@ -20,5 +20,17 @@ public class ProdutoEntityFactory {
 		return entity;
 	}
 
+	public static ProdutoEntity atualizar(ProdutoEntity produtoBanco, ProdutoVO produto) {
+		
+		produtoBanco.setPreco(produto.getPreco());
+		produtoBanco.setQuantidade(produto.getQuantidade());
+		produtoBanco.setNome(produto.getNome());
+		produtoBanco.setDescricao(produto.getDescricao());
+		
+		return produtoBanco;
+		
+		
+	}
+
 	
 }

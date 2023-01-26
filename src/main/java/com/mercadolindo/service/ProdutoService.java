@@ -33,8 +33,6 @@ public class ProdutoService {
 		this.categoriaRepository = categoriaRepository;
 	}
 
-	//TODO: IMPLEMENTAR PUT , DELETE 
-	
 	@Transactional
 	public ProdutoVO cadastrar(ProdutoVO produto) {
 			
@@ -59,6 +57,16 @@ public class ProdutoService {
 		return ProdutoVOFactory.pageEntityToPageVO(produtos);
 	}
 	
+	@Transactional
+	public ProdutoVO atualizar(ProdutoVO produto) {
+		
+		ProdutoEntity produtoBanco = recuperarProdutoPorId(produto.getId());
+		
+		ProdutoEntity produtoAlterado = produtoRepository.save(ProdutoEntityFactory.atualizar(produtoBanco , produto));
+		
+		return ProdutoVOFactory.toVO(produtoAlterado);
+	}
+
 	private List<CategoriaEntity> popularCategoria(List<CategoriaVO> list) {
 		List<CategoriaEntity> categorias = new ArrayList<>();
 	    
@@ -74,5 +82,17 @@ public class ProdutoService {
 	    
 	}
 
+	@Transactional
+	public void removerProduto(Long id) {
+		ProdutoEntity produtoBanco = recuperarProdutoPorId(id);
+		produtoRepository.deleteById(produtoBanco.getId());
+		produtoRepository.flush();
+	}
+
+	
+	private ProdutoEntity recuperarProdutoPorId(Long id) {
+		return produtoRepository.findById(id).orElseThrow(() 
+				-> new NaoEncontradoException(String.format("Nenhum produto encontrado com id: %s" , id)));
+	}
 	
 }
