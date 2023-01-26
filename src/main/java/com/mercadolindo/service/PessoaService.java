@@ -25,6 +25,7 @@ import com.mercadolindo.model.AtualizarSenhaVO;
 import com.mercadolindo.model.EnderecoVo;
 import com.mercadolindo.model.PessoaCadastroVO;
 import com.mercadolindo.repositories.CidadeRepository;
+import com.mercadolindo.repositories.EnderecoRepository;
 import com.mercadolindo.repositories.PessoaRepository;
 import com.mercadolindo.utils.VerificaDuplicadosUtils;
 
@@ -37,8 +38,8 @@ public class PessoaService {
 	@Autowired
 	CidadeRepository cidadeRepository;
 	
-//	@Autowired
-//	EnderecoRepository enderecoRepository;
+	@Autowired
+	EnderecoRepository enderecoRepository;
 	
 	BCryptPasswordEncoder encode = new BCryptPasswordEncoder();
 	
@@ -226,7 +227,7 @@ public class PessoaService {
 		enderecosRemovidos.forEach(remov -> {
 
 			enderecosBanco.remove(remov);
-//			enderecoRepository.delete(remov);
+			enderecoRepository.delete(remov);
 
 		});
 	}
