@@ -27,8 +27,6 @@ public class EnderecoVo implements Serializable {
 	
 	private SimNaoEnum enderecoPrincipal;
 	
-	
-	
 	private String nomeCidade;
 
 	public Long getId() {
@@ -127,5 +125,6 @@ public class EnderecoVo implements Serializable {
 			return false;
 		return true;
 	}
+
 
 }

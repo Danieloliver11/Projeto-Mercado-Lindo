@@ -9,7 +9,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -26,8 +25,6 @@ import javax.persistence.Table;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import com.mercadolindo.enums.FuncaoNome;
 
 @Entity
 @Table(name = "TB_USUARIO")
@@ -49,7 +46,7 @@ public class UsuarioEntity implements  UserDetails , Serializable {
 	@Column(name = "TOKEN")
 	private String token;
 	
-	@Column(name = "LOGIN", nullable = false)
+	@Column(name = "LOGIN", nullable = false) //
 	private String login;
 	
 	@Column(name = "SENHA", nullable = false)
@@ -123,7 +120,7 @@ public class UsuarioEntity implements  UserDetails , Serializable {
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
-
+	
 	public PessoaEntity getPessoa() {
 		return pessoa;
 	}
@@ -149,7 +146,7 @@ public class UsuarioEntity implements  UserDetails , Serializable {
 
 	@Override
 	public String getPassword() {
-		return this.senha.toString();
+		return this.senha;
 	}
 
 	@Override
