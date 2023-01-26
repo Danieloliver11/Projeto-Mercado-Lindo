@@ -31,10 +31,13 @@ public class PessoaController {
 	}
 	
 	@PutMapping
-	public Void atualizarSenha(@Valid @RequestBody AtualizarSenhaVO atualizarSenhaVO) {
+	public PessoaCadastroVO atualizarSenha(@Valid @RequestBody AtualizarSenhaVO atualizarSenhaVO) {
 		return pessoaService.atualizarSenha(atualizarSenhaVO);
 	}
 	
-	
+	@PutMapping("/atualiza-pessoa")
+	public PessoaCadastroVO atualizarPessoa(@Valid @RequestBody PessoaCadastroVO pessoaVO) {
+		return pessoaService.atualizarPessoa(pessoaVO);
+	}
 
 }

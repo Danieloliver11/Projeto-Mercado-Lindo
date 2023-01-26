@@ -3,9 +3,9 @@ package com.mercadolindo.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
-import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -37,6 +37,9 @@ public class PessoaService {
 	@Autowired
 	CidadeRepository cidadeRepository;
 	
+//	@Autowired
+//	EnderecoRepository enderecoRepository;
+	
 	BCryptPasswordEncoder encode = new BCryptPasswordEncoder();
 	
 	@Transactional
@@ -56,22 +59,23 @@ public class PessoaService {
 		for (EnderecoVo enderecoVo : pessoaVO.getEnderecos()) {
 			
 			EnderecoEntity enderecoEntity = EnderecoEntityFactory.converterParaEntity(enderecoVo, pessoaEntity);
-			Optional<CidadeEntity> municipioEntity = cidadeRepository.findById(enderecoVo.getIdMunicipio());
+			CidadeEntity municipioEntity = acharCidadePorId(enderecoVo);
 			
-			enderecoEntity.setCidade(municipioEntity.get());
+			enderecoEntity.setCidade(municipioEntity);
 			enderecoEntityList.add(enderecoEntity);
 		}
 		
 		pessoaEntity.setEnderecos(enderecoEntityList);
 		
-		
+		pessoaRepository.save(pessoaEntity);
 				
-		return PessoaCadastroVOFactory.converterParaVO(pessoaRepository.save(pessoaEntity));
+		return PessoaCadastroVOFactory.converterParaVO(pessoaEntity);
 
 	}
-
-	public Void atualizarSenha(@Valid AtualizarSenhaVO atualizarSenhaVO) {
-		
+	
+	@Transactional
+	public PessoaCadastroVO atualizarSenha(AtualizarSenhaVO atualizarSenhaVO) {
+				
 		PessoaEntity pessoaEntity = acharPessoaProId(atualizarSenhaVO.getId());
 		
 		
@@ -81,14 +85,76 @@ public class PessoaService {
 		
 		pessoaEntity.getUsuario().setSenha(encriptarNovaSenha(atualizarSenhaVO));
 		
-		pessoaRepository.save(pessoaEntity);
+		return PessoaCadastroVOFactory.converterParaVO(pessoaEntity);
 		
-		return null;
 	}
 	
-	//verificar endereco principal no put
+	public PessoaCadastroVO acharPessoa(Long idPessoa) {
+		
+		PessoaEntity pessoaEntity = acharPessoaProId(idPessoa);
+
+		return PessoaCadastroVOFactory.converterParaVO(pessoaEntity);
+	}
 	
-	
+	@Transactional
+	public PessoaCadastroVO atualizarPessoa(PessoaCadastroVO pessoaVO) {
+		
+		//TODO verificar se na lista de enderecos existe pelomenos um endereco princila!
+
+		
+		PessoaEntity pessoaEntity = acharPessoaProId(pessoaVO.getId());
+		
+		VerificaDuplicadosUtils.verificaDuplicado(pessoaVO.getEnderecos());
+		verificarQuantidadeEnderecoPrincipal(pessoaVO.getEnderecos());
+
+		validarMunicipio(pessoaVO.getEnderecos());
+		
+		Optional<PessoaEntity> pessoaEmailOptional = pessoaRepository.findByEmail(pessoaVO.getEmail());
+		if(pessoaEmailOptional.isPresent()) {
+			PessoaEntity pessoaEmail = pessoaEmailOptional.get();
+			
+			if(!pessoaEmail.getId().equals(pessoaEntity.getId()) && pessoaEmail.getEmail().equals(pessoaVO.getEmail())) {
+				throw new DadosJaCadastradosException("Não é possivel atualizar o E-MAIL! E-MAIL:"+ pessoaVO.getEmail() +  " já cadastrado NO BANCO de dados: ");
+			}
+		}
+				
+		List<EnderecoEntity> enderecosBanco = pessoaEntity.getEnderecos();
+
+		if (!enderecosBanco.isEmpty())
+			removerEnderecos(enderecosBanco, pessoaVO.getEnderecos());
+		
+		List<EnderecoEntity> endereco = EnderecoEntityFactory.converterParaAtualizarListaEntity(enderecosBanco, pessoaVO.getEnderecos());
+		
+		pessoaEntity.setEnderecos(endereco);
+		
+		
+		PessoaEntity pessoaAtualizadaEntity = PessoaCadastroEntityFactory.converterParaAtualizarEntity(pessoaEntity,pessoaVO);
+		
+		pessoaAtualizadaEntity.setEnderecos(enderecosBanco);
+		
+		PessoaEntity save = pessoaRepository.save(pessoaAtualizadaEntity);
+		
+		List<EnderecoEntity> novosEnderesosEntity = new ArrayList<>();
+		
+		for (EnderecoVo enderecoVO : pessoaVO.getEnderecos()) {
+			
+			if(enderecoVO.getId() <= 0 || enderecoVO.getId() == null) {
+				
+				EnderecoEntity converterParaEntity = EnderecoEntityFactory.converterParaEntity(enderecoVO, pessoaEntity);
+				CidadeEntity municipioEntity = acharCidadePorId(enderecoVO);
+				converterParaEntity.setCidade(municipioEntity);
+				
+				novosEnderesosEntity.add(converterParaEntity);
+			
+			}
+
+		}
+		
+		save.getEnderecos().addAll(novosEnderesosEntity);
+
+		
+		return PessoaCadastroVOFactory.converterParaVO(pessoaRepository.save(save));
+	}
 	
 	
 
@@ -96,9 +162,7 @@ public class PessoaService {
 		return encode.encode(atualizarSenhaVO.getSenhaNova());
 		
 	}
-
-
-
+	
 	private PessoaEntity acharPessoaProId(Long id) {
 		return pessoaRepository.findById(id).orElseThrow(() -> new NaoEncontradoException(
 				"Nenhuma Pessoa encontrado pelo ID:" + id));
@@ -150,6 +214,30 @@ public class PessoaService {
 					throw new ParametroInvalidoException("Não é possível cadastrar mais de um endereço principal!");
 			}
 		}
+	}
+
+	private void removerEnderecos(List<EnderecoEntity> enderecosBanco, List<EnderecoVo> enderecosAtualizado) {
+
+		List<EnderecoEntity> enderecosRemovidos = enderecosBanco.stream()
+				.filter(banco -> enderecosAtualizado.stream()
+						.filter(atualizado -> banco.getId().equals(atualizado.getId())).findFirst().isEmpty())
+				.collect(Collectors.toList());
+
+		enderecosRemovidos.forEach(remov -> {
+
+			enderecosBanco.remove(remov);
+//			enderecoRepository.delete(remov);
+
+		});
+	}
+
+	
+	
+	public CidadeEntity acharCidadePorId(EnderecoVo enderecoVo) {
+		return cidadeRepository.findById(enderecoVo.getIdMunicipio()).orElseThrow(() -> new NaoEncontradoException(
+					"Nenhuma cidade encontrado pelo ID:" + enderecoVo.getIdMunicipio()));
+		
+
 	}
 
 

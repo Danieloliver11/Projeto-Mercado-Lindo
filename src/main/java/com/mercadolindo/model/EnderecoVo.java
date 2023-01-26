@@ -2,6 +2,8 @@ package com.mercadolindo.model;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotNull;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mercadolindo.enums.SimNaoEnum;
 
@@ -10,6 +12,7 @@ public class EnderecoVo implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
+	@NotNull
 	private Long id;
 	
 	private String bairro;
