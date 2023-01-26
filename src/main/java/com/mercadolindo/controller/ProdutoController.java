@@ -1,9 +1,6 @@
 package com.mercadolindo.controller;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -19,8 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mercadolindo.entity.CategoriaEntity;
-import com.mercadolindo.model.CategoriaVO;
 import com.mercadolindo.model.ProdutoVO;
 import com.mercadolindo.repositories.CategoriaRepository;
 import com.mercadolindo.service.ProdutoService;
@@ -32,12 +27,8 @@ class ProdutoController {
 
 	final ProdutoService produtoService;
 
-	final CategoriaRepository categoriaRepository;
-	
 	public ProdutoController(ProdutoService produtoService , CategoriaRepository categoriaRepository) {
 		this.produtoService = produtoService;
-		this.categoriaRepository = categoriaRepository;
-
 	}
 
 	@PostMapping
@@ -55,20 +46,4 @@ class ProdutoController {
 		return produtoService.pesquisarProdutoPorFiltro(nome, valorMinimo, valorMaximo, freteGratis, idUF, idCategoria,pageRequest);
 	}
 	
-	@GetMapping("/teste")
-	public List<CategoriaVO> findPai(Long id){
-		List<CategoriaVO> cats = new ArrayList<>();
-		
-		List<CategoriaEntity> cat = categoriaRepository.findFilhosByIdPai(id);
-		
-		cat.forEach(r -> {
-			CategoriaVO vo = new CategoriaVO();
-			vo.setId(r.getId());
-			vo.setNome(r.getNome());
-			cats.add(vo);
-		});
-		
-		return cats;
-	}
-
 }
