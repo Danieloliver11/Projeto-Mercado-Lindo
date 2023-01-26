@@ -1,5 +1,6 @@
 package com.mercadolindo.factory.entityFactory;
 
+
 import com.mercadolindo.entity.PessoaEntity;
 import com.mercadolindo.model.PessoaCadastroVO;
 
@@ -22,6 +23,19 @@ public class PessoaCadastroEntityFactory {
 		}
 		return null;
 		
+	}
+
+	public static PessoaEntity converterParaAtualizarEntity(PessoaEntity pessoaAtualizada,
+			 PessoaCadastroVO pessoaVO) {
+
+		pessoaAtualizada.setDataNascimento(pessoaVO.getDataNascimento());
+		pessoaAtualizada.setEmail(pessoaVO.getEmail());
+//		pessoaAtualizada.setEnderecos(null);
+		pessoaAtualizada.setNome(pessoaVO.getNome());
+		pessoaAtualizada.setSexo(pessoaVO.getSexo());
+		pessoaAtualizada.setUsuario(UsuarioEntityFactory.converterParaAtualizarEntity(pessoaAtualizada,pessoaVO));
+		
+		return pessoaAtualizada;
 	}
 
 }

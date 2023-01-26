@@ -1,4 +1,4 @@
-package com.mercadolindo.service;
+package com.mercadolindo.mock;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -15,6 +15,7 @@ import org.mockito.MockitoAnnotations;
 
 import com.mercadolindo.model.ProdutoVO;
 import com.mercadolindo.repositories.ProdutoRepository;
+import com.mercadolindo.service.ProdutoService;
 
 @TestInstance(Lifecycle.PER_CLASS)
 class ProdutoServiceTest {
