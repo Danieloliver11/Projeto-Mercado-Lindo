@@ -19,6 +19,7 @@ import com.mercadolindo.model.factory.ProdutoVOFactory;
 import com.mercadolindo.repositories.CategoriaRepository;
 import com.mercadolindo.repositories.ProdutoRepository;
 import com.mercadolindo.repositories.specification.ProdutoSpecification;
+import com.mercadolindo.utils.VerificaDuplicadosUtils;
 
 @Service
 public class ProdutoService {
@@ -32,14 +33,20 @@ public class ProdutoService {
 		this.categoriaRepository = categoriaRepository;
 	}
 
+	//TODO: IMPLEMENTAR PUT , DELETE 
+	
 	@Transactional
 	public ProdutoVO cadastrar(ProdutoVO produto) {
 			
 	    ProdutoEntity entity = ProdutoEntityFactory.toEntity(produto);
 	    
+		VerificaDuplicadosUtils.verificaDuplicado(produto.getCategorias());
+
 	    List<CategoriaEntity> categorias = popularCategoria(produto.getCategorias());
 		
 	    entity.setCategorias(categorias);
+	    
+	    produtoRepository.save(entity);
 	    
 		return ProdutoVOFactory.toVO(entity);
 	}

@@ -34,5 +34,7 @@ public class PessoaController {
 	public Void atualizarSenha(@Valid @RequestBody AtualizarSenhaVO atualizarSenhaVO) {
 		return pessoaService.atualizarSenha(atualizarSenhaVO);
 	}
+	
+	
 
 }

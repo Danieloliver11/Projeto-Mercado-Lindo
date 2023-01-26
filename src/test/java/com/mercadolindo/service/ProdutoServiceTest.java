@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -34,7 +35,7 @@ class ProdutoServiceTest {
 
 	@Test
 	void cadastrarProduto() {	
-
+		
 		ProdutoVO cadastro = produtoService.cadastrar(vo);
 		
 		assertNotNull(cadastro.getNome());
@@ -54,6 +55,7 @@ class ProdutoServiceTest {
 		vo.setPreco(new BigDecimal("110"));
 		vo.setDescricao("Melhor controle universal!");
 		vo.setNome("Controle remoto");
+		vo.setCategorias(new ArrayList<>());
 		return vo;
 	}
 
