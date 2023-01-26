@@ -1,21 +1,22 @@
 package com.mercadolindo.mock;
 
+import static org.mockito.Mockito.when;
+
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.mockito.MockitoAnnotations;
 
-import com.mercadolindo.entity.PessoaEntity;
-import com.mercadolindo.entity.UsuarioEntity;
+import com.mercadolindo.entity.CidadeEntity;
 import com.mercadolindo.enums.SexoEnum;
 import com.mercadolindo.enums.SimNaoEnum;
 import com.mercadolindo.model.EnderecoVo;
@@ -28,7 +29,8 @@ import com.mercadolindo.service.PessoaService;
 //@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 //@TestInstance(Lifecycle.PER_CLASS)
 //@SpringBootTest
-@ExtendWith(MockitoExtension.class)
+//@ExtendWith(MockitoExtension.class)
+@TestInstance(Lifecycle.PER_CLASS)
 class PessoaTests {
 	
 	@InjectMocks
@@ -43,29 +45,11 @@ class PessoaTests {
 	@Test
 	@Order(1)
 	void deveSalvarPessoa() {
+			
+		when(cidadeRepository.findById(1l)).thenReturn(Optional.of(new CidadeEntity()));
+		when(pessoaRepository.findBycpf("70597363013")).thenReturn(Optional.empty());
 		
-//		PessoaEntity p = Mockito.mock(PessoaEntity.class);
-		PessoaEntity p = new PessoaEntity() ;
-
-		p.setNome("Sr nome");
-		p.setId(1l);
-		p.setCpf("70597363013");
-		p.setDataNascimento(LocalDate.of(1991, 9, 1));
-		p.setSexo(SexoEnum.M);
-		p.setEmail("jaja@gmail.com");
-		
-		UsuarioEntity usuario = new UsuarioEntity();
-		
-		usuario.setNomeUsuario("JAJA");
-		usuario.setSenha("1234567");
-		usuario.setLogin("jaja@gmail.com");
-		
-		p.setUsuario(usuario);
-		
-		PessoaCadastroVO pessoa = criarPessoa();
-		
-//		Mockito.when(pessoaRepository.findBycpf("70597363013")).thenReturn(Optional.of(p));
-		
+		PessoaCadastroVO pessoa = criarPessoa();		
 		pessoaService.salvarPessoa(pessoa);
 	}
 
@@ -91,11 +75,17 @@ class PessoaTests {
 		
 		endereco.setBairro("Bairro");
 		endereco.setCep("0000-00");
-		endereco.setNumeroCasa(75);
+		endereco.setNumeroCasa("75");
 		endereco.setIdMunicipio(1L);
 		endereco.setEnderecoPrincipal(SimNaoEnum.S);
 		
 		return Arrays.asList(endereco);
+	}
+	
+	@BeforeAll
+	private void init() {
+
+		MockitoAnnotations.openMocks(this);
 	}
 
 }
