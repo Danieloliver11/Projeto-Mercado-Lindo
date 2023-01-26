@@ -3,16 +3,13 @@ package com.mercadolindo.mock;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import com.mercadolindo.entity.PessoaEntity;
 import com.mercadolindo.entity.UsuarioEntity;
@@ -91,7 +88,7 @@ class PessoaTests {
 		
 		endereco.setBairro("Bairro");
 		endereco.setCep("0000-00");
-		endereco.setNumeroCasa(75);
+		endereco.setNumeroCasa("75");
 		endereco.setIdMunicipio(1L);
 		endereco.setEnderecoPrincipal(SimNaoEnum.S);
 		

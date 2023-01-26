@@ -2,19 +2,22 @@ package com.mercadolindo.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -29,7 +32,7 @@ public class ProdutoEntity implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(name = "NOME", nullable = false)
+	@Column(name = "NOME", nullable = false , length = 150)
 	private String nome;
 	
 	@Column(name = "PRECO", precision = 19, scale = 2, nullable = false)
@@ -38,17 +41,18 @@ public class ProdutoEntity implements Serializable{
 	@Column(name = "QUANTIDADE", nullable = false)
 	private Integer quantidade;
 	
-	@Lob
-	@Column(name = "DESCRICAO")
-//	@Column(columnDefinition = "varchar (300) not null default 'DESCRICAO' ")
+	@Column(name = "DESCRICAO" , length = 150)
 	private String descricao;
+	
+	@Column(name = "FLAG_FRETE_GRATIS" , nullable = false)
+	private boolean freteGratis;
 	
 	@Lob
 	@ElementCollection
 	@CollectionTable(name = "TB_IMAGEM", joinColumns = @JoinColumn(name ="ID_PRODUTO"))
 	@Column(name = "IMAGEM")
-	private Collection<byte[]> imagens;
-	
+	private List<byte[]> imagens;
+    
 	@OneToMany(mappedBy = "id.produto")
 	private List<ItemPedidoEntity> itemPedidos;
 	//N:N
@@ -58,6 +62,15 @@ public class ProdutoEntity implements Serializable{
 	@OneToMany(mappedBy = "produto",cascade = CascadeType.ALL)
 	private List<AvaliacaoProdutosEntity> avaliacaoProduto;
 
+	@ManyToMany
+    @JoinTable(name = "TB_PRODUTOS_CATEGORIAS",
+            joinColumns = @JoinColumn(name = "produto_id", nullable = false,
+                    foreignKey = @ForeignKey(name = "fk_produto_categoria_produto")),
+            inverseJoinColumns = @JoinColumn(name = "categoria_id", nullable = false,
+                    foreignKey = @ForeignKey(name = "fk_produto_categoria_categoria")))
+    private List<CategoriaEntity> categorias;
+
+	
 	public Long getId() {
 		return id;
 	}
@@ -97,22 +110,21 @@ public class ProdutoEntity implements Serializable{
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
+		
+	public boolean isFreteGratis() {
+		return freteGratis;
+	}
 
+	public void setFreteGratis(boolean freteGratis) {
+		this.freteGratis = freteGratis;
+	}
 	
-	public Collection<byte[]> getImagens() {
+	public List<byte[]> getImagens() {
 		return imagens;
 	}
 
-	public void setImagens(Collection<byte[]> imagens) {
+	public void setImagens(List<byte[]> imagens) {
 		this.imagens = imagens;
-	}
-
-	public List<ItemPedidoEntity> getItemPedidoEntity() {
-		return itemPedidos;
-	}
-
-	public void setItemPedidoEntity(List<ItemPedidoEntity> itemPedidos) {
-		this.itemPedidos = itemPedidos;
 	}
 
 	public List<ItemPedidoEntity> getItemPedidos() {
@@ -130,13 +142,30 @@ public class ProdutoEntity implements Serializable{
 	public void setPerguntas(List<PerguntasEntity> perguntas) {
 		this.perguntas = perguntas;
 	}
+	
+	public List<CategoriaEntity> getCategorias() {
+		return categorias;
+	}
+	
+	public void setCategorias(List<CategoriaEntity> categorias) {
+		this.categorias = categorias;
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
 
-	
-	
-	
-	
-	
-	
-	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ProdutoEntity other = (ProdutoEntity) obj;
+		return Objects.equals(id, other.id);
+	}
 
 }
