@@ -60,7 +60,7 @@ public class PessoaService {
 		for (EnderecoVo enderecoVo : pessoaVO.getEnderecos()) {
 			
 			EnderecoEntity enderecoEntity = EnderecoEntityFactory.converterParaEntity(enderecoVo, pessoaEntity);
-			CidadeEntity municipioEntity = acharCidadePorId(enderecoVo);
+			CidadeEntity municipioEntity = acharCidadePorId(enderecoVo.getIdMunicipio());
 			
 			enderecoEntity.setCidade(municipioEntity);
 			enderecoEntityList.add(enderecoEntity);
@@ -95,6 +95,7 @@ public class PessoaService {
 		PessoaEntity pessoaEntity = acharPessoaProId(idPessoa);
 
 		return PessoaCadastroVOFactory.converterParaVO(pessoaEntity);
+				
 	}
 	
 	@Transactional
@@ -124,17 +125,16 @@ public class PessoaService {
 		if (!enderecosBanco.isEmpty())
 			removerEnderecos(enderecosBanco, pessoaVO.getEnderecos());
 		
-		List<EnderecoEntity> endereco = EnderecoEntityFactory.converterParaAtualizarListaEntity(enderecosBanco, pessoaVO.getEnderecos());
+		List<EnderecoEntity> enderecosAtualizados = EnderecoEntityFactory.converterParaAtualizarListaExistenteEntity(enderecosBanco, pessoaVO.getEnderecos());
 		
-		pessoaEntity.setEnderecos(endereco);
+		enderecosAtualizados.forEach(endereco -> {
+			endereco.setCidade(acharCidadePorId(endereco.getIdMunicipio())	);
+		});
 		
+		pessoaEntity.setEnderecos(enderecosAtualizados);
 		
 		PessoaEntity pessoaAtualizadaEntity = PessoaCadastroEntityFactory.converterParaAtualizarEntity(pessoaEntity,pessoaVO);
-		
-		pessoaAtualizadaEntity.setEnderecos(enderecosBanco);
-		
-		PessoaEntity save = pessoaRepository.save(pessoaAtualizadaEntity);
-		
+						
 		List<EnderecoEntity> novosEnderesosEntity = new ArrayList<>();
 		
 		for (EnderecoVo enderecoVO : pessoaVO.getEnderecos()) {
@@ -142,7 +142,7 @@ public class PessoaService {
 			if(enderecoVO.getId() <= 0 || enderecoVO.getId() == null) {
 				
 				EnderecoEntity converterParaEntity = EnderecoEntityFactory.converterParaEntity(enderecoVO, pessoaEntity);
-				CidadeEntity municipioEntity = acharCidadePorId(enderecoVO);
+				CidadeEntity municipioEntity = acharCidadePorId(enderecoVO.getIdMunicipio());
 				converterParaEntity.setCidade(municipioEntity);
 				
 				novosEnderesosEntity.add(converterParaEntity);
@@ -151,10 +151,10 @@ public class PessoaService {
 
 		}
 		
-		save.getEnderecos().addAll(novosEnderesosEntity);
-
+		pessoaAtualizadaEntity.getEnderecos().addAll(novosEnderesosEntity);
 		
-		return PessoaCadastroVOFactory.converterParaVO(pessoaRepository.save(save));
+		return PessoaCadastroVOFactory.converterParaVO(pessoaRepository.save(pessoaAtualizadaEntity));
+	
 	}
 	
 	
@@ -234,9 +234,9 @@ public class PessoaService {
 
 	
 	
-	public CidadeEntity acharCidadePorId(EnderecoVo enderecoVo) {
-		return cidadeRepository.findById(enderecoVo.getIdMunicipio()).orElseThrow(() -> new NaoEncontradoException(
-					"Nenhuma cidade encontrado pelo ID:" + enderecoVo.getIdMunicipio()));
+	public CidadeEntity acharCidadePorId(Long id) {
+		return cidadeRepository.findById(id).orElseThrow(() -> new NaoEncontradoException(
+					"Nenhuma cidade encontrado pelo ID:" + id));
 		
 
 	}

@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.mercadolindo.enums.SimNaoEnum;
 
@@ -48,9 +49,12 @@ public class EnderecoEntity implements Serializable{
 	@JoinColumn(name = "ID_PESSOA", nullable = false,foreignKey = @ForeignKey(name ="FK_ENDERECO_PESSOA"))
 	private PessoaEntity pessoa;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "ID_CIDADE",foreignKey = @ForeignKey(name ="FK_ENDERECO_CIDADE"))
 	private CidadeEntity cidade;
+	
+	@Transient
+	private Long idMunicipio;
 
 	public Long getId() {
 		return id;
@@ -115,9 +119,13 @@ public class EnderecoEntity implements Serializable{
 	public void setFlagEnderecoPrincipal(SimNaoEnum flagEnderecoPrincipal) {
 		this.flagEnderecoPrincipal = flagEnderecoPrincipal;
 	}
-	
-	
-	
-	
 
+	public Long getIdMunicipio() {
+		return idMunicipio;
+	}
+
+	public void setIdMunicipio(Long idMunicipio) {
+		this.idMunicipio = idMunicipio;
+	}
+	
 }

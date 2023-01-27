@@ -11,7 +11,7 @@ public class PessoaCadastroVOFactory {
 		pessoaVo.setCpf(save.getCpf());
 		pessoaVo.setDataNascimento(save.getDataNascimento());
 		pessoaVo.setEmail(save.getEmail());
-		pessoaVo.setEnderecos(EnderecoVOFactory.converteParaVO(save.getEnderecos()));
+		pessoaVo.setEnderecos(EnderecoVOFactory.converteListaParaVO(save.getEnderecos()));
 		pessoaVo.setId(save.getId());
 		pessoaVo.setNome(save.getNome());
 		pessoaVo.setNomeUsuario(save.getUsuario().getNomeUsuario());

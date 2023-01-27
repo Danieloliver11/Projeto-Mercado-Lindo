@@ -7,27 +7,27 @@ import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mercadolindo.enums.SimNaoEnum;
 
-@JsonIgnoreProperties(value= "nomeCidade", allowSetters = false, allowGetters  = true)
+//@JsonIgnoreProperties(value= "municipio", allowSetters = false, allowGetters  = true)
 public class EnderecoVo implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@NotNull
 	private Long id;
-	
+
 	private String bairro;
-	
+
 	private String nomeRua;
-	
+
 	private String numeroCasa;
-	
+
 	private String cep;
-	
+
 	private Long idMunicipio;
-	
+
+	private MunicipioVO municipio;
+
 	private SimNaoEnum enderecoPrincipal;
-	
-	private String nomeCidade;
 
 	public Long getId() {
 		return id;
@@ -84,15 +84,15 @@ public class EnderecoVo implements Serializable {
 	public void setEnderecoPrincipal(SimNaoEnum enderecoPrincipal) {
 		this.enderecoPrincipal = enderecoPrincipal;
 	}
-	
-	
 
-	public String getNomeCidade() {
-		return nomeCidade;
+
+
+	public MunicipioVO getMunicipio() {
+		return municipio;
 	}
 
-	public void setNomeCidade(String nomeCidade) {
-		this.nomeCidade = nomeCidade;
+	public void setMunicipio(MunicipioVO municipio) {
+		this.municipio = municipio;
 	}
 
 	@Override
@@ -125,6 +125,5 @@ public class EnderecoVo implements Serializable {
 			return false;
 		return true;
 	}
-
 
 }
