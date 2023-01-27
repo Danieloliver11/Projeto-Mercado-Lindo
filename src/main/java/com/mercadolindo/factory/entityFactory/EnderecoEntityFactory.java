@@ -37,7 +37,7 @@ public class EnderecoEntityFactory {
 
 	}
 
-	public static List<EnderecoEntity> converterParaAtualizarListaEntity(List<EnderecoEntity> enderecosBanco,
+	public static List<EnderecoEntity> converterParaAtualizarListaExistenteEntity(List<EnderecoEntity> enderecosBanco,
 			List<EnderecoVo> enderecosAtualizado) {
 		
 		for (EnderecoEntity enderecoEntity : enderecosBanco) {
@@ -51,12 +51,12 @@ public class EnderecoEntityFactory {
 					enderecoEntity.setFlagEnderecoPrincipal(enderecoVO.getEnderecoPrincipal());
 					enderecoEntity.setNumero(enderecoVO.getNumeroCasa());
 					enderecoEntity.setRua(enderecoVO.getNomeRua());
+					enderecoEntity.setIdMunicipio(enderecoVO.getIdMunicipio());
 				}
 					
 				
 			}
-				
-			
+	
 		}
 		
 		return enderecosBanco;
