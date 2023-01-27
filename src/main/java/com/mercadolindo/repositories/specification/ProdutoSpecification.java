@@ -1,6 +1,5 @@
 package com.mercadolindo.repositories.specification;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,63 +14,45 @@ import org.springframework.data.jpa.domain.Specification;
 
 import com.mercadolindo.entity.CategoriaEntity;
 import com.mercadolindo.entity.ProdutoEntity;
+import com.mercadolindo.model.filter.ProdutoFiltroVO;
 
 public class ProdutoSpecification implements Specification<ProdutoEntity> {
 
 	private static final long serialVersionUID = -9112179560601786827L;
-	
-	private transient String nome;
-	private transient BigDecimal valorMinimo;
-	private transient BigDecimal valorMaximo;
-	private transient boolean freteGratis;
-	
-	//TODO: FINALIZAR ESTE FLUXO DE UF
-	private transient Long idUF;
-	private transient Long idCategoria;
 
-	public ProdutoSpecification(String nome, BigDecimal valorMinimo, BigDecimal valorMaximo, boolean freteGratis,
-			Long idUF ,Long idCategoria) {
-		this.nome = nome;
-		this.valorMinimo = valorMinimo;
-		this.valorMaximo = valorMaximo;
-		this.freteGratis = freteGratis;
-		this.idUF = idUF;
-		this.idCategoria = idCategoria;
+	private transient ProdutoFiltroVO filtros;
+
+	public ProdutoSpecification(ProdutoFiltroVO filtros) {
+		this.filtros = filtros;
 	}
-
 
 	@Override
 	public Predicate toPredicate(Root<ProdutoEntity> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
 		List<Predicate> condicoes = new ArrayList<>();
-		
+
 		query.orderBy(criteriaBuilder.asc(root.get("id")));
-		
-		if(nome != null && !nome.isBlank()) {
-			Predicate likeNome = criteriaBuilder.like(root.get("nome"), nome + "%");
+
+		if (filtros.incluiNome()) {
+			Predicate likeNome = criteriaBuilder.like(root.get("nome"), filtros.getNome() + "%");
 			condicoes.add(likeNome);
 		}
-		
-		if(valorMinimo != null && valorMaximo != null && valorMinimo.compareTo(valorMaximo) < 0) {
-			Predicate betweenMinAndMax = criteriaBuilder.between(root.get("preco"), valorMinimo, valorMaximo);
+
+		if (filtros.getValorMinimo() != null && filtros.getValorMaximo() != null && filtros.getValorMinimo().compareTo(filtros.getValorMaximo()) < 0) {
+			Predicate betweenMinAndMax = criteriaBuilder.between(root.get("preco"), filtros.getValorMinimo(), filtros.getValorMaximo());
 			condicoes.add(betweenMinAndMax);
 		}
-		
-		if(freteGratis) {
-			Predicate frete = criteriaBuilder.equal(root.get("freteGratis"), freteGratis);
+
+		if (filtros.isFreteGratis()) {
+			Predicate frete = criteriaBuilder.equal(root.get("freteGratis"), filtros.isFreteGratis());
 			condicoes.add(frete);
 		}
 
-		if(idUF != null) {
-//			Predicate uf = criteriaBuilder.equal(root, root);
-//			condicoes.add(uf);
-		}
-		
-		if(idCategoria != null) {
-			Join<ProdutoEntity, CategoriaEntity> joinProdutoCategoria = root.join("categorias" , JoinType.INNER);
-			Predicate categoria = criteriaBuilder.equal(joinProdutoCategoria.get("id"), idCategoria);
+		if (filtros.incluiIdCategoria()) {
+			Join<ProdutoEntity, CategoriaEntity> joinProdutoCategoria = root.join("categorias", JoinType.INNER);
+			Predicate categoria = criteriaBuilder.equal(joinProdutoCategoria.get("id"), filtros.getIdCategoria());
 			condicoes.add(categoria);
 		}
-		
+
 		return criteriaBuilder.and(condicoes.toArray(new Predicate[0]));
 	}
 

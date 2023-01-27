@@ -1,6 +1,5 @@
 package com.mercadolindo.service;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +15,7 @@ import com.mercadolindo.exception.NaoEncontradoException;
 import com.mercadolindo.model.CategoriaVO;
 import com.mercadolindo.model.ProdutoVO;
 import com.mercadolindo.model.factory.ProdutoVOFactory;
+import com.mercadolindo.model.filter.ProdutoFiltroVO;
 import com.mercadolindo.repositories.CategoriaRepository;
 import com.mercadolindo.repositories.ProdutoRepository;
 import com.mercadolindo.repositories.specification.ProdutoSpecification;
@@ -49,10 +49,9 @@ public class ProdutoService {
 		return ProdutoVOFactory.toVO(entity);
 	}
 
-	public Page<ProdutoVO> pesquisarProdutoPorFiltro(String nome, BigDecimal valorMinimo, BigDecimal valorMaximo,
-			boolean freteGratis, Long idUF, Long idCategoria, Pageable pageRequest) {
+	public Page<ProdutoVO> pesquisarProdutoPorFiltro(ProdutoFiltroVO filtros, Pageable pageRequest) {
 		
-		Page<ProdutoEntity> produtos = produtoRepository.findAll(new ProdutoSpecification(nome , valorMinimo , valorMaximo , freteGratis, idCategoria ,idUF) , pageRequest);
+		Page<ProdutoEntity> produtos = produtoRepository.findAll(new ProdutoSpecification(filtros) , pageRequest);
 		
 		return ProdutoVOFactory.pageEntityToPageVO(produtos);
 	}
@@ -86,7 +85,6 @@ public class ProdutoService {
 	public void removerProduto(Long id) {
 		ProdutoEntity produtoBanco = recuperarProdutoPorId(id);
 		produtoRepository.deleteById(produtoBanco.getId());
-		produtoRepository.flush();
 	}
 
 	
@@ -94,5 +92,6 @@ public class ProdutoService {
 		return produtoRepository.findById(id).orElseThrow(() 
 				-> new NaoEncontradoException(String.format("Nenhum produto encontrado com id: %s" , id)));
 	}
+
 	
 }

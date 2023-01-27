@@ -1,7 +1,5 @@
 package com.mercadolindo.controller;
 
-import java.math.BigDecimal;
-
 import javax.validation.Valid;
 
 import org.springframework.data.domain.Page;
@@ -14,11 +12,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mercadolindo.model.ProdutoVO;
+import com.mercadolindo.model.filter.ProdutoFiltroVO;
 import com.mercadolindo.repositories.CategoriaRepository;
 import com.mercadolindo.service.ProdutoService;
 
@@ -51,12 +49,8 @@ class ProdutoController {
 	}
 	
 	@GetMapping("/filtros")
-	public Page<ProdutoVO> pesquisarProdutoPorFiltro(@RequestParam(required = false) String nome,
-			@RequestParam(required = false) BigDecimal valorMinimo,
-			@RequestParam(required = false) BigDecimal valorMaximo, @RequestParam(required = false) boolean freteGratis,
-			@RequestParam(required = false) Long idUF ,
-			@RequestParam(required = false) Long idCategoria , Pageable pageRequest) {
-		return produtoService.pesquisarProdutoPorFiltro(nome, valorMinimo, valorMaximo, freteGratis, idUF, idCategoria,pageRequest);
+	public Page<ProdutoVO> pesquisarProdutoPorFiltro(ProdutoFiltroVO filtros, Pageable pageRequest) {
+		return produtoService.pesquisarProdutoPorFiltro(filtros , pageRequest);
 	}
 	
 }
