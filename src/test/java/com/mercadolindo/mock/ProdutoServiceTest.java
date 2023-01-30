@@ -111,14 +111,19 @@ class ProdutoServiceTest {
 
 	private List<CategoriaEntity> getCategorias() {
 		CategoriaEntity categoria = new CategoriaEntity();
-		categoria.setId(random.nextLong());
-		categoria.setNome("Teste mock");
+		categoria.setId(1L);
 		
 		return Arrays.asList(categoria);
 	}
 
 	private void recuperarProdutoPorIdMock() {
-		when(produtoRepository.findById(1L)).thenReturn(Optional.of(new ProdutoEntity()));
+		
+		ProdutoEntity produto = new ProdutoEntity();
+		produto.setId(vo.getId());
+		produto.setDescricao(vo.getDescricao());
+		produto.setCategorias(getCategorias());
+		
+		when(produtoRepository.findById(1L)).thenReturn(Optional.of(produto));
 	}
 	
 	private ProdutoVO gerarProduto() {

@@ -35,7 +35,7 @@ public class ProdutoVO {
 	private String descricao;
 	
 	@Valid
-	@NotEmpty
+	@NotEmpty(message = "Lista de categorias não pode estar vazia")
 	private List<CategoriaVO> categorias;
 	
 	private boolean freteGratis;

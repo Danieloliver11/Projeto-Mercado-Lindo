@@ -62,7 +62,7 @@ public class ProdutoEntity implements Serializable{
 	@OneToMany(mappedBy = "produto",cascade = CascadeType.ALL)
 	private List<AvaliacaoProdutosEntity> avaliacaoProduto;
 
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "TB_PRODUTOS_CATEGORIAS",
             joinColumns = @JoinColumn(name = "produto_id", nullable = false,
                     foreignKey = @ForeignKey(name = "fk_produto_categoria_produto")),

@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mercadolindo.model.ProdutoVO;
 import com.mercadolindo.model.filter.ProdutoFiltroVO;
-import com.mercadolindo.repositories.CategoriaRepository;
 import com.mercadolindo.service.ProdutoService;
 
 @RestController
@@ -27,7 +27,7 @@ class ProdutoController {
 
 	final ProdutoService produtoService;
 
-	public ProdutoController(ProdutoService produtoService , CategoriaRepository categoriaRepository) {
+	public ProdutoController(ProdutoService produtoService) {
 		this.produtoService = produtoService;
 	}
 
@@ -44,13 +44,18 @@ class ProdutoController {
 
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@DeleteMapping("/remover-produto/{id}")
-	public void removerProduto(Long id) {
+	public void removerProduto(@PathVariable Long id) {
 	     produtoService.removerProduto(id);
 	}
 	
 	@GetMapping("/filtros")
 	public Page<ProdutoVO> pesquisarProdutoPorFiltro(ProdutoFiltroVO filtros, Pageable pageRequest) {
 		return produtoService.pesquisarProdutoPorFiltro(filtros , pageRequest);
+	}
+	
+	@GetMapping("/{id}")
+	public ProdutoVO pesquisarProdutoPorId(@PathVariable Long id) {
+		return produtoService.pesquisarProdutoPorId(id);
 	}
 	
 }

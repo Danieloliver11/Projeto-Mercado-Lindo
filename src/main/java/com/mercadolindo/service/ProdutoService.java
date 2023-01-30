@@ -1,7 +1,7 @@
 package com.mercadolindo.service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,9 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mercadolindo.entity.CategoriaEntity;
 import com.mercadolindo.entity.ProdutoEntity;
+import com.mercadolindo.entity.factory.CategoriaEntityFactory;
 import com.mercadolindo.entity.factory.ProdutoEntityFactory;
 import com.mercadolindo.exception.NaoEncontradoException;
-import com.mercadolindo.model.CategoriaVO;
 import com.mercadolindo.model.ProdutoVO;
 import com.mercadolindo.model.factory.ProdutoVOFactory;
 import com.mercadolindo.model.filter.ProdutoFiltroVO;
@@ -40,9 +40,7 @@ public class ProdutoService {
 	    
 		VerificaDuplicadosUtils.verificaDuplicado(produto.getCategorias());
 
-	    List<CategoriaEntity> categorias = popularCategoria(produto.getCategorias());
-		
-	    entity.setCategorias(categorias);
+	    entity.setCategorias(CategoriaEntityFactory.converterListParaEntity(produto.getCategorias()));
 	    
 	    produtoRepository.save(entity);
 	    
@@ -63,22 +61,44 @@ public class ProdutoService {
 		
 		ProdutoEntity produtoAlterado = produtoRepository.save(ProdutoEntityFactory.atualizar(produtoBanco , produto));
 		
+		List<CategoriaEntity> categoriasOriginais = produtoBanco.getCategorias();
+		List<CategoriaEntity> categoriasAlteradas = CategoriaEntityFactory.converterListParaEntity(produto.getCategorias());
+		
+		if(!categoriasOriginais.isEmpty()) {
+			removerCategorias(categoriasOriginais, categoriasAlteradas);
+			categoriasAlteradas = getNovasCategorias(categoriasOriginais, categoriasAlteradas);
+		}
+		
+		if(!categoriasAlteradas.isEmpty()) {
+			categoriasAlteradas.forEach(categoria -> {
+				CategoriaEntity categoriaEntity = categoriaRepository.findById(categoria.getId()).orElseThrow(
+						() -> new NaoEncontradoException("Nenhuma categoria encontrada com id: "+ categoria.getId()));
+				categoriasOriginais.add(categoriaEntity);
+			});
+		}
+		
+		produtoBanco.setCategorias(categoriasOriginais);
+		
 		return ProdutoVOFactory.toVO(produtoAlterado);
 	}
 
-	private List<CategoriaEntity> popularCategoria(List<CategoriaVO> list) {
-		List<CategoriaEntity> categorias = new ArrayList<>();
-	    
-		if(list != null) {
-	    list.forEach(vo -> {
-	    	CategoriaEntity categoria = categoriaRepository.findById(vo.getId()).orElseThrow(
-	    			() -> new NaoEncontradoException("Nenhuma categoria encontrada com id: " + vo.getId()));	
-	    	categorias.add(categoria);
-	    });
-		}
-		
-	    return categorias;
-	    
+	private List<CategoriaEntity> getNovasCategorias(List<CategoriaEntity> categoriasOriginais,
+			List<CategoriaEntity> categoriasAlteradas) {
+		return categoriasAlteradas.stream()
+                .filter(alterada -> categoriasOriginais.stream()
+                .filter(original -> alterada.getId().equals(original.getId())).findFirst().isEmpty())
+                .collect(Collectors.toList());
+	}
+
+	private void removerCategorias(
+			List<CategoriaEntity> categoriasOriginal,
+			List<CategoriaEntity> categoriasAlteradas) {
+		List<CategoriaEntity> removidos = categoriasOriginal.stream().filter(original -> 
+		 categoriasAlteradas.stream().filter(
+				 alterada -> original.getId().equals(alterada.getId())).findFirst().isEmpty()).toList();
+		removidos.stream().forEach(categoria -> 
+			categoriasOriginal.remove(categoria)
+		);
 	}
 
 	@Transactional
@@ -91,6 +111,13 @@ public class ProdutoService {
 	private ProdutoEntity recuperarProdutoPorId(Long id) {
 		return produtoRepository.findById(id).orElseThrow(() 
 				-> new NaoEncontradoException(String.format("Nenhum produto encontrado com id: %s" , id)));
+	}
+
+	public ProdutoVO pesquisarProdutoPorId(Long id) {
+		
+		ProdutoEntity produto = recuperarProdutoPorId(id);
+		
+		return ProdutoVOFactory.toVO(produto);
 	}
 
 	
